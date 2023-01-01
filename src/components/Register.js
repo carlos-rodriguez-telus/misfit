@@ -1,8 +1,24 @@
 import { Formik, Field, Form } from "formik";
+import axios from 'axios';
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Register(){
+
     function makeLogin(values){
-        alert(JSON.stringify(values));
+      axios.post('http://localhost:3000/user', {values})
+      .then(
+        (response)=>{
+          if(response.data.status=="OK"){
+            console.log(response.data.message);
+            toast.success(response.data.message);
+          }else{
+            console.error(response.data.message);
+            toast.error(response.data.message);
+          }
+        }
+      );
     }
 
     return (
@@ -73,6 +89,7 @@ function Register(){
               </div>
             </Form>
           </Formik>
+        <ToastContainer /> 
         </div>
     );
 }

@@ -32,7 +32,7 @@ function History() {
       {/* Filter END */}
       {/* Table START */}
       <div style={{ marginTop: "20px" }}>
-        <table class="table">
+        <table className="table">
           <thead>
             <tr>
               <th scope="col">#</th>
