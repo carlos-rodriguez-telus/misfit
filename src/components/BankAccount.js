@@ -42,6 +42,8 @@ function BankAccount(props) {
           toast.error(response.data.error);
         }
       });
+    }else{
+      toast.error("Action canceled");
     }
   }
 
