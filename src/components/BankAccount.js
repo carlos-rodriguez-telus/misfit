@@ -1,5 +1,5 @@
 import { Formik, Field, Form } from "formik";
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -11,25 +11,45 @@ import { UserContext } from "../index";
 
 function BankAccount(props) {
 
+  const ref = useRef(null);
+
   const value = useContext(UserContext);
 
   function addAcount(values) {
     alert("usuario: " + value);
     axios.post(routes.ACCOUNT, { values }).then((response) => {
       if (response.data.status == "OK") {
-        console.log(response.data.message);
         toast.success(response.data.message);
       } else {
-        console.error(response.data.message);
-        toast.error(response.data.message);
+        toast.error(response.data.error);
       }
     });
+  }
+
+  function deleteAccount(){
+    console.log(ref.current.values);
+
+    let userID = ref.current.values.account_user_id;
+    let accountID = ref.current.values.account_number;
+    let action = window.confirm(`Are you sure to delete account ${ref.current.values.account_number}?`);
+    
+    if(action){
+      axios.delete(routes.ACCOUNT+`/${userID}/${accountID}`)
+      .then((response)=>{
+        if(response.data.status=="OK"){
+          toast.success("Account Deleted");
+        }else{
+          toast.error(response.data.error);
+        }
+      });
+    }
   }
 
   return (
     <div className="form-wrapper">
       <h2>Add bank account</h2>
       <Formik
+        innerRef={ref}
         initialValues={{
           account_user_id: "1",
           bank_name: "",
@@ -58,7 +78,7 @@ function BankAccount(props) {
             />
           </div>
           <div className="form-group">
-            <label>Initial Balance:</label>
+            <label> Balance:</label>
             <Field
               id="balance"
               name="balance"
@@ -76,12 +96,22 @@ function BankAccount(props) {
               Add
             </button>
             <button
+              className="btn btn-success"
+              style={{ marginRight: "5px" }}
+              type="reset"
+            >
+              Clear Fields
+            </button>
+
+            <button
               className="btn btn-danger"
               style={{ marginRight: "5px" }}
-              type="submit"
+              type="button"
+              onClick={()=>{deleteAccount(props)}}
             >
               Delete Account
             </button>
+
           </div>
         </Form>
       </Formik>

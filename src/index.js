@@ -12,7 +12,7 @@ import History from "./components/History";
 import Transfer from "./components/Transfer";
 import Dashboard from "./components/Dashboard";
 
-export const UserContext = createContext("1");
+export const UserContext = createContext("0");
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -22,8 +22,9 @@ root.render(
       style={{ display: "block", width: "60%", margin: "0 auto" }}
     >
       <Register />
-      <UserContext.Provider value="15">
+      <UserContext.Provider value="1">
         <BankAccount />
+        <Movements/>
       </UserContext.Provider>
     </div>
   </React.StrictMode>
