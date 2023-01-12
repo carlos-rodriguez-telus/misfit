@@ -25,6 +25,7 @@ root.render(
       <UserContext.Provider value="1">
         <BankAccount />
         <Movements/>
+        <History/>
       </UserContext.Provider>
     </div>
   </React.StrictMode>

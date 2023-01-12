@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import routes from "../constants/routes";
 
 import axios from "axios";
+import { toast } from "react-toastify";
 
 function Movements() {
   const userID = "1";
@@ -12,15 +13,18 @@ function Movements() {
 
   useEffect(() => {
     axios.get(routes.ACCOUNT + "/" + userID).then((response) => {
-      console.log(response.data.message);
       let array = [...response.data.message];
+      array.unshift({
+        bank_name: "",
+        account_number: "Select Account -",
+        account_id: "",
+      });
       setAccounts(
         array.map((item) => {
-          console.log(item);
           return (
             <option
               key={item.bank_name + item.account_number}
-              value={item.account_number}
+              value={item.account_id}
             >
               {item.bank_name + " - " + item.account_number}
             </option>
@@ -31,31 +35,80 @@ function Movements() {
   }, []);
 
   const incomeCategories = [
-    <option value="0">----- Income -----</option>,
-    <option value="1">Cheque</option>,
-    <option value="2">Transfer</option>,
-    <option value="3">Cash</option>,
+    <option key="C0" value="0">
+      ----- Income -----
+    </option>,
+    <option key="C1" value="1">
+      Cheque
+    </option>,
+    <option key="C2" value="2">
+      Transfer
+    </option>,
+    <option key="C3" value="3">
+      Cash
+    </option>,
   ];
 
   const expenseCategories = [
-    <option value="0">----- Expense -----</option>,
-    <option value="4">Food</option>,
-    <option value="5">Wear</option>,
-    <option value="6">Shoes</option>,
-    <option value="7">House</option>,
-    <option value="8">Car</option>,
+    <option key="C0" value="0">
+      ----- Expense -----
+    </option>,
+    <option key="C4" value="4">
+      Food
+    </option>,
+    <option key="C5" value="5">
+      Wear
+    </option>,
+    <option key="C6" value="6">
+      Shoes
+    </option>,
+    <option key="C7" value="7">
+      House
+    </option>,
+    <option key="C8" value="8">
+      Car
+    </option>,
   ];
 
   function addTransaction(values) {
-    alert(JSON.stringify(values));
+    let data = { ...values };
+
+    if (data.account_id == "0") {
+      alert("Please select a valid account!");
+      return;
+    }
+
+    if (data.category == "0") {
+      alert("Please select a valid category!");
+      return;
+    }
+
+    if (data.category >= 1 && data.category <= 3) {
+      data["transaction_type"] = 0;
+    } else {
+      data["transaction_type"] = 1;
+    }
+
+    axios
+      .post(routes.TRANSACTION, { data })
+      .then((response) => {
+        if (response.data.status == "OK") {
+          toast.success(response.data.message);
+        } else {
+          toast.error(response.data.error);
+        }
+      })
+      .catch((error) => {
+        toast.error("Something went wrong, please check transaction information");
+      });
   }
 
   const initialValues = {
-    user_id: 1,
+    transaction_user_id: 1,
     account_id: 0,
     category: 0,
     amount: 0,
-    date: new Date(),
+    date: new Date().toISOString().slice(0, 10),
   };
 
   return (
