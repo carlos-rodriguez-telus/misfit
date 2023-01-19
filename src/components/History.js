@@ -3,40 +3,21 @@ import axios from "axios";
 import routes from "../constants/routes";
 
 function History() {
-
   const [accounts, setAccounts] = useState([]);
-
-  useEffect(() => {
-    axios.get(routes.ACCOUNT + "/" + 1).then((response) => {
-      let array = [...response.data.message];
-      array.unshift({
-        bank_name: "",
-        account_number: "Select Account -",
-        account_id: "",
-      });
-      setAccounts(
-        array.map((item) => {
-          return (
-            <option
-              key={item.bank_name + item.account_number}
-              value={item.account_id}
-            >
-              {item.bank_name + " - " + item.account_number}
-            </option>
-          );
-        })
-      );
-    });
-  }, []);
-
-
   const [filter, setFilter] = useState("date");
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(new Date().toISOString().slice(0, 10));
+  const [movements, setMovements] = useState([]);
 
   const availableFilters = [
-    <option key="date" value="date">Date</option>,
-    <option key="category" value="category">Category</option>,
-    <option key="account" value="account">Bank Account</option>,
+    <option key="date" value="date">
+      Date
+    </option>,
+    <option key="category" value="category">
+      Category
+    </option>,
+    <option key="account" value="account">
+      Bank Account
+    </option>,
   ];
 
   const incomeCategories = [
@@ -75,19 +56,57 @@ function History() {
     </option>,
   ];
 
-  function setCategory(event){
-    setFilter(event.target.value);
+  const cat = {};
+  cat["1"]="Cheque";
+  cat["2"]="Transfer";
+  cat["3"]="Cash";
+  cat["4"]="Food";
+  cat["5"]="Wear";
+  cat["6"]="Shoes";
+  cat["7"]="House";
+  cat["8"]="Car";
+
+  useEffect(() => {
+    axios.get(routes.ACCOUNT + "/" + 1).then((response) => {
+      let array = [...response.data.message];
+      array.unshift({
+        bank_name: "",
+        account_number: "Select Account -",
+        account_id: "",
+      });
+      setAccounts(
+        array.map((item) => {
+          return (
+            <option
+              key={item.bank_name + item.account_number}
+              value={item.account_id}
+            >
+              {item.bank_name + " - " + item.account_number}
+            </option>
+          );
+        })
+      );
+    });
+  }, []);
+
+  function setCategory(event) {
+    let filterCategory = event.target.value;
+    setFilter(filterCategory);
+    if (filterCategory === "date") {
+      setValue(new Date().toISOString().slice(0, 10));
+    } else {
+      setValue(0);
+    }
   }
 
-  function setFilterValue(event){
+  function setFilterValue(event) {
     setValue(event.target.value);
   }
 
-  function callApi(){
-    alert(routes.FILTER+`/1/${filter}/${value}`);    
-    axios.get(routes.FILTER+`/1/${filter}/${value}`)
-    .then((response)=>{
-      console.log(response);
+  function callApi() {
+    alert(routes.FILTER + `/1/${filter}/${value}`);
+    axios.get(routes.FILTER + `/1/${filter}/${value}`).then((response) => {
+      setMovements([...response.data.message]);
     });
   }
 
@@ -107,13 +126,18 @@ function History() {
             {filter == "date" && (
               <>
                 <label>Select Date:</label> <br />
-                <input className="form-control" type={"date"} onChange={setFilterValue} />
+                <input
+                  className="form-control"
+                  type={"date"}
+                  onChange={setFilterValue}
+                  defaultValue={new Date().toISOString().slice(0, 10)}
+                />
               </>
             )}
 
             {filter == "category" && (
               <>
-                <label>Select Category:</label> <br/>
+                <label>Select Category:</label> <br />
                 <select className="form-control" onClick={setFilterValue}>
                   {expenseCategories}
                   {incomeCategories}
@@ -121,21 +145,22 @@ function History() {
               </>
             )}
 
-            {filter == "account" &&
+            {filter == "account" && (
               <>
-                <label>Select Account:</label> <br/>
+                <label>Select Account:</label> <br />
                 <select className="form-control" onClick={setFilterValue}>
                   {accounts}
                 </select>
               </>
-            }
-
+            )}
           </div>
         </form>
         <div className="form-group">
-            <br />
-            <button className="btn btn-info" onClick={callApi}>Search</button>
-          </div>
+          <br />
+          <button className="btn btn-info" onClick={callApi}>
+            Search transaction 
+          </button>
+        </div>
       </div>
       {/* Filter END */}
       {/* Table START */}
@@ -152,22 +177,18 @@ function History() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>2022/11/06</td>
-              <td>BAC</td>
-              <td>expense</td>
-              <td>house</td>
-              <td>100</td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>2022/11/08</td>
-              <td>BR</td>
-              <td>income</td>
-              <td>cash</td>
-              <td>200</td>
-            </tr>
+            {movements.map((item) => {
+              return (
+                <tr key={item.transaction_id}>
+                  <th scope="row">{item.transaction_id}</th>
+                  <td>{item.date}</td>
+                  <td>{item.Account.bank_name}</td>
+                  <td>{item.transaction_type==0?"Income":"Expense"}</td>
+                  <td>{cat[item.category]}</td>
+                  <td>{item.amount}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

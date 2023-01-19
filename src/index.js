@@ -1,32 +1,22 @@
-import React, { createContext } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
+import { BrowserRouter } from "react-router-dom"
 
 import "bootstrap/dist/css/bootstrap.min.css";
+import "react-toastify/dist/ReactToastify.css";
 
-import Login from "./components/Login";
-import Menu from "./components/Menu";
-import Register from "./components/Register";
-import BankAccount from "./components/BankAccount";
-import Movements from "./components/Movements";
-import History from "./components/History";
-import Transfer from "./components/Transfer";
-import Dashboard from "./components/Dashboard";
-
-export const UserContext = createContext("0");
+import App from "./components/App";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <div
       className="container"
-      style={{ display: "block", width: "60%", margin: "0 auto" }}
+      style={{ display: "block", width: "70%", margin: "0 auto" }}
     >
-      <Register />
-      <UserContext.Provider value="1">
-        <BankAccount />
-        <Movements/>
-        <History/>
-      </UserContext.Provider>
+      <BrowserRouter>
+        <App/>
+      </BrowserRouter>
     </div>
   </React.StrictMode>
 );

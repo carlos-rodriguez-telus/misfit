@@ -2,10 +2,10 @@ import { Formik, Field, Form } from "formik";
 import axios from "axios";
 import routes from "../constants/routes";
 
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 function Register() {
+
   function makeLogin(values) {
     axios.post(routes.USER, { values }).then((response) => {
       if (response.data.status == "OK") {
@@ -94,8 +94,7 @@ function Register() {
             </button>
           </div>
         </Form>
-      </Formik>
-      <ToastContainer />
+      </Formik>      
     </div>
   );
 }

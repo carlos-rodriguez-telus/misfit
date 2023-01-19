@@ -1,9 +1,18 @@
-import { useState } from "react";
+import axios from "axios";
+import React, { useState, useContext } from "react";
+import { toast } from "react-toastify";
+import routes from "../constants/routes";
+import {Link, useNavigate} from "react-router-dom"
+
+import UserContext from "../providers/UserContext";
 
 function Login() {
+  const navigate = useNavigate();
 
-  const [user,setUser] = useState("");
-  const [password,setPassword] = useState("");
+  const [user, setUser] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [userID, updateUserId] = useContext(UserContext);
 
   function inputUser(event){
     setUser(event.target.value);
@@ -14,7 +23,20 @@ function Login() {
   }
 
   function makeLogin() {
-    alert("user: " + user + " password: " + password);
+    axios.post(routes.LOGIN, {"email":user, "password":password})
+    .then((response)=>{
+      if(response.data.message==="INVALID"){
+        toast.error("Invalid Credentials!");
+      }else{
+        //TODO set a valid user
+        updateUserId("1");
+        navigate("/dashboard");
+      }
+    })
+    .catch((error)=>{
+      console.log(error);
+      toast.error("Something went wrong, try again.");
+    });
   }
 
   return (
@@ -56,9 +78,9 @@ function Login() {
         </div>
       </div>
       <div className="row text-center" style={{ marginTop: "50px" }}>
-        <a href="#" className="link-info">
+        <Link to = "/register" className="link-info">
           Don't have an account? Register here
-        </a>
+        </Link>
       </div>
     </>
   );

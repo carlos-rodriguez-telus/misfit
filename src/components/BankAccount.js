@@ -1,22 +1,21 @@
 import { Formik, Field, Form } from "formik";
 import { useContext, useRef } from "react";
 
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 import axios from "axios";
 import routes from "../constants/routes";
 
-import { UserContext } from "../index";
+import UserContext from "../providers/UserContext";
 
 function BankAccount(props) {
 
   const ref = useRef(null);
 
-  const value = useContext(UserContext);
+  const {userSessionId, setSessionUserId} = useContext(UserContext);
 
   function addAcount(values) {
-    alert("usuario: " + value);
+    alert("usuario: " + userSessionId);
     axios.post(routes.ACCOUNT, { values }).then((response) => {
       if (response.data.status == "OK") {
         toast.success(response.data.message);
@@ -27,7 +26,6 @@ function BankAccount(props) {
   }
 
   function deleteAccount(){
-    console.log(ref.current.values);
 
     let userID = ref.current.values.account_user_id;
     let accountID = ref.current.values.account_number;
@@ -117,7 +115,6 @@ function BankAccount(props) {
           </div>
         </Form>
       </Formik>
-      <ToastContainer />
     </div>
   );
 }

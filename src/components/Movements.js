@@ -84,9 +84,9 @@ function Movements() {
     }
 
     if (data.category >= 1 && data.category <= 3) {
-      data["transaction_type"] = 0;
+      data["transaction_type"] = 0; //Income
     } else {
-      data["transaction_type"] = 1;
+      data["transaction_type"] = 1; //Expense
     }
 
     axios
@@ -113,7 +113,7 @@ function Movements() {
 
   return (
     <div className="form-wrapper">
-      <h2>Add Expense/Income</h2>
+      <h2>Add Expense/Income Transaction</h2>
       <Formik initialValues={initialValues} onSubmit={addTransaction}>
         <Form>
           <div className="form-group">
@@ -155,7 +155,7 @@ function Movements() {
           <div className="form-group">
             <br />
             <button className="btn btn-success" type="submit">
-              Add movement
+              Add transaction
             </button>
           </div>
         </Form>
