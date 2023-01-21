@@ -25,11 +25,11 @@ function Login() {
   function makeLogin() {
     axios.post(routes.LOGIN, {"email":user, "password":password})
     .then((response)=>{
-      if(response.data.message==="INVALID"){
+      if(response.data.message==="INVALID LOGIN"){
         toast.error("Invalid Credentials!");
       }else{
         //TODO set a valid user
-        updateUserId("1");
+        updateUserId(response.data.userData.user_id);
         navigate("/dashboard");
       }
     })
@@ -44,7 +44,12 @@ function Login() {
       <div className="row">
         <div className="col ">
           <div className="row text-center">
-            <h2>Welcome to Misfit!</h2>
+            <h2>
+              <span><img src="./misfit.png" alt="wallet_icon" style={{
+                width:"128px", height:"128px", marginRight:"10px"
+                }}/></span>
+              Welcome to Misfit!
+            </h2>
           </div>
           <div className="form-wrapper">
             <div className="form-group">

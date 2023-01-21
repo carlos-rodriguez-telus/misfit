@@ -1,5 +1,7 @@
 import { Formik, Field, Form } from "formik";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+
+import UserContext from "../providers/UserContext";
 
 import routes from "../constants/routes";
 
@@ -7,7 +9,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 function Movements() {
-  const userID = "1";
+  const [userID, updateUserId] = useContext(UserContext);
 
   const [accounts, setAccounts] = useState([]);
 
@@ -50,22 +52,22 @@ function Movements() {
   ];
 
   const expenseCategories = [
-    <option key="C0" value="0">
+    <option key="C4" value="0">
       ----- Expense -----
     </option>,
-    <option key="C4" value="4">
+    <option key="C5" value="4">
       Food
     </option>,
-    <option key="C5" value="5">
+    <option key="C6" value="5">
       Wear
     </option>,
-    <option key="C6" value="6">
+    <option key="C7" value="6">
       Shoes
     </option>,
-    <option key="C7" value="7">
+    <option key="C8" value="7">
       House
     </option>,
-    <option key="C8" value="8">
+    <option key="C9" value="8">
       Car
     </option>,
   ];
@@ -113,6 +115,7 @@ function Movements() {
 
   return (
     <div className="form-wrapper">
+      <img src="./pay.png" alt="wallet_icon" style={{width:"48px", height:"48px", marginRight:"10px"}}/>
       <h2>Add Expense/Income Transaction</h2>
       <Formik initialValues={initialValues} onSubmit={addTransaction}>
         <Form>

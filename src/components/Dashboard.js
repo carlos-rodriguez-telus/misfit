@@ -1,13 +1,23 @@
+import { useContext } from "react";
+
 import Movements from "./Movements";
 import Transfer from "./Transfer";
 
+import UserContext from "../providers/UserContext";
+
 function Dashboard() {
-    //CSS
-    let separator = {marginTop:"25px", borderTop: "#fc9423 solid 1px", paddingTop:"15px"};
+  const [userID, updateUserId] = useContext(UserContext);
+
+  //CSS
+  let separator = {
+    marginTop: "25px",
+    borderTop: "#fc9423 solid 1px",
+    paddingTop: "15px",
+  };
 
   return (
     <div className="form-wrapper">
-      <h2>Your Dashboard!</h2>
+      <h2>Your Finances!</h2>
       <div className="row">
         <div className="col">
           <div className="card">
@@ -34,7 +44,6 @@ function Dashboard() {
       <div className="row" style={separator}>
         <Transfer />
       </div>
-
     </div>
   );
 }

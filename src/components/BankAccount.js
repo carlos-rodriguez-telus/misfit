@@ -1,21 +1,19 @@
 import { Formik, Field, Form } from "formik";
 import { useContext, useRef } from "react";
 
+import UserContext from "../providers/UserContext";
+
 import { toast } from "react-toastify";
 
 import axios from "axios";
 import routes from "../constants/routes";
 
-import UserContext from "../providers/UserContext";
-
 function BankAccount(props) {
+  const [userID, updateUserId] = useContext(UserContext);
 
   const ref = useRef(null);
 
-  const {userSessionId, setSessionUserId} = useContext(UserContext);
-
   function addAcount(values) {
-    alert("usuario: " + userSessionId);
     axios.post(routes.ACCOUNT, { values }).then((response) => {
       if (response.data.status == "OK") {
         toast.success(response.data.message);
@@ -25,33 +23,35 @@ function BankAccount(props) {
     });
   }
 
-  function deleteAccount(){
-
-    let userID = ref.current.values.account_user_id;
+  function deleteAccount() {
     let accountID = ref.current.values.account_number;
-    let action = window.confirm(`Are you sure to delete account ${ref.current.values.account_number}?`);
-    
-    if(action){
-      axios.delete(routes.ACCOUNT+`/${userID}/${accountID}`)
-      .then((response)=>{
-        if(response.data.status=="OK"){
-          toast.success("Account Deleted");
-        }else{
-          toast.error(response.data.error);
-        }
-      });
-    }else{
+    let action = window.confirm(
+      `Are you sure to delete account ${ref.current.values.account_number}?`
+    );
+
+    if (action) {
+      axios
+        .delete(routes.ACCOUNT + `/${userID}/${accountID}`)
+        .then((response) => {
+          if (response.data.status == "OK") {
+            toast.success("Account Deleted");
+          } else {
+            toast.error(response.data.error);
+          }
+        });
+    } else {
       toast.error("Action canceled");
     }
   }
 
   return (
     <div className="form-wrapper">
+      <img src="./account.png" alt="wallet_icon" style={{width:"48px", height:"48px", marginRight:"10px"}}/>
       <h2>Add bank account</h2>
       <Formik
         innerRef={ref}
         initialValues={{
-          account_user_id: "1",
+          account_user_id: userID,
           bank_name: "",
           account_number: 0,
           balance: 0,
@@ -102,16 +102,16 @@ function BankAccount(props) {
             >
               Clear Fields
             </button>
-
             <button
               className="btn btn-danger"
               style={{ marginRight: "5px" }}
               type="button"
-              onClick={()=>{deleteAccount(props)}}
+              onClick={() => {
+                deleteAccount(props);
+              }}
             >
               Delete Account
             </button>
-
           </div>
         </Form>
       </Formik>

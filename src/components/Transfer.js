@@ -1,19 +1,21 @@
+import { useContext } from "react";
+import UserContext from "../providers/UserContext";
+
+
 function Transfer() {
-  const availableFilters = [
-    <option value="date">Date</option>,
-    <option value="date">Category</option>,
-    <option value="date">Bank Account</option>,
-  ];
+
+  const [userID, updateUserId] = useContext(UserContext);
 
   return (
     <div className="row">
+      <img src="./exchange.png" alt="wallet_icon" style={{width:"70px", height:"48px", marginRight:"10px"}}/>
       <h2>Money Transfer</h2>
       {/* Left */}
       <div className="col">
         <form className="form-wrapper">
             {/* Account Select */}
           <div className="form-group">
-            <label>Select Account <span class="badge bg-danger">Origin</span></label>
+            <label>Select Account <span className="badge bg-danger">Origin</span></label>
             <select className="form-control" style={{marginTop:"5px"}}>
               <option value="1">BAC</option>
               <option value="2">Banrural</option>
@@ -33,7 +35,7 @@ function Transfer() {
         <form className="form-wrapper">
             {/* Target Account */}
           <div className="form-group">
-          <label>Select Account <span class="badge bg-success">Target</span></label>
+          <label>Select Account <span className="badge bg-success">Target</span></label>
             <select className="form-control" style={{marginTop:"5px"}}>
               <option value="1">BAC</option>
               <option value="2">Banrural</option>

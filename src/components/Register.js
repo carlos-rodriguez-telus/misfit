@@ -1,4 +1,5 @@
 import { Formik, Field, Form } from "formik";
+import { Link } from "react-router-dom"
 import axios from "axios";
 import routes from "../constants/routes";
 
@@ -18,6 +19,7 @@ function Register() {
 
   return (
     <div className="form-wrapper">
+      <img src="./user.png" alt="wallet_icon" style={{width:"48px", height:"48px", marginRight:"10px"}}/>
       <h2>Registration Form</h2>
       <Formik
         initialValues={{
@@ -95,7 +97,13 @@ function Register() {
           </div>
         </Form>
       </Formik>      
+      <div className="row text-center" style={{ marginTop: "50px" }}>
+        <Link to = "/" className="link-info">
+          Have an account? Login here
+        </Link>
+      </div>
     </div>
+    
   );
 }
 

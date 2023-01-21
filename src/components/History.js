@@ -1,8 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import routes from "../constants/routes";
 
+import UserContext from "../providers/UserContext";
+
 function History() {
+  const [userID, updateUserId] = useContext(UserContext);
   const [accounts, setAccounts] = useState([]);
   const [filter, setFilter] = useState("date");
   const [value, setValue] = useState(new Date().toISOString().slice(0, 10));
@@ -32,28 +35,28 @@ function History() {
     </option>,
     <option key="C3" value="3">
       Cash
-    </option>,
+    </option>
   ];
 
   const expenseCategories = [
-    <option key="C0" value="0">
+    <option key="C4" value="0">
       ----- Expense -----
     </option>,
-    <option key="C4" value="4">
+    <option key="C5" value="4">
       Food
     </option>,
-    <option key="C5" value="5">
+    <option key="C6" value="5">
       Wear
     </option>,
-    <option key="C6" value="6">
+    <option key="C7" value="6">
       Shoes
     </option>,
-    <option key="C7" value="7">
+    <option key="C8" value="7">
       House
     </option>,
-    <option key="C8" value="8">
+    <option key="C9" value="8">
       Car
-    </option>,
+    </option>
   ];
 
   const cat = {};
@@ -104,8 +107,7 @@ function History() {
   }
 
   function callApi() {
-    alert(routes.FILTER + `/1/${filter}/${value}`);
-    axios.get(routes.FILTER + `/1/${filter}/${value}`).then((response) => {
+    axios.get(routes.FILTER + `/${userID}/${filter}/${value}`).then((response) => {
       setMovements([...response.data.message]);
     });
   }
@@ -114,6 +116,7 @@ function History() {
     <div>
       {/* Filter START */}
       <div className="form-wrapper">
+      <img src="./history.png" alt="wallet_icon" style={{width:"48px", height:"48px", marginRight:"10px"}}/>
         <h2>Transaction History</h2>
         <div className="form-group">
           <label>Filter Type:</label>
@@ -168,7 +171,7 @@ function History() {
         <table className="table">
           <thead>
             <tr>
-              <th scope="col">#</th>
+              <th scope="col">Ref#</th>
               <th scope="col">Date</th>
               <th scope="col">Bank</th>
               <th scope="col">Type</th>

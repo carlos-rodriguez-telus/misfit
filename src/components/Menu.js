@@ -18,29 +18,34 @@ function Menu() {
 
   return (
     <>
+                {userID != "default" && (
       <div className="row" style={{ marginBottom: "25px" }}>
         <div className="col">
           <nav className="navbar navbar-expand-md navbar-dark bg-dark">
             <div className="container-fluid">
-              <Link className="navbar-brand" to="/">
+              <span className="navbar-brand" to="/">
+                <img src="./wallet.png" alt="wallet_icon" style={{width:"48px", height:"48px", marginRight:"10px"}}/>
                 Misfit
-              </Link>
+              </span>
               <div className="navbar-nav">
-                {userID != "default" && (
                   <>
                     <Link className="nav-link" to="/dashboard">Dashboard</Link>
                     <Link className="nav-link" to="/accounts">Bank Accounts</Link>
                     <Link className="nav-link" to="/transactions">Transactions</Link>
                     <Link className="nav-link" to="/transfers">Transfers</Link>
                     <Link className="nav-link" to="/history">History</Link>
-                    <button className="btn btn-danger" onClick={closeSession}>Exit</button>
+                    <button className="btn btn-danger" onClick={closeSession}>Exit
+                    <span>
+                      <img src="./exit.png" alt="wallet_icon" style={{width:"16px", height:"px", marginLeft:"5px"}}/>
+                    </span>
+                    </button>
                   </>
-                )}
               </div>
             </div>
           </nav>
         </div>
       </div>
+                )}
     </>
   );
 }
