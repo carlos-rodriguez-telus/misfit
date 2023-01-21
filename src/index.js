@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom"
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
+import '../node_modules/react-vis/dist/style.css';
 
 import App from "./components/App";
 

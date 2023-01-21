@@ -1,5 +1,6 @@
 import { useContext } from "react";
 
+import Graph from "./Graph";
 import Movements from "./Movements";
 import Transfer from "./Transfer";
 
@@ -22,7 +23,15 @@ function Dashboard() {
         <div className="col">
           <div className="card">
             <div className="card-body">
-              <h5 className="card-title">Movements</h5>
+              <h5 className="card-title">Top 5 Category Expenses</h5>
+                <Graph/>
+              </div>
+          </div>
+        </div>
+        <div className="col">
+          <div className="card">
+            <div className="card-body">
+              <h5 className="card-title">Income</h5>
               This is some text within a card body.
             </div>
           </div>
@@ -34,7 +43,7 @@ function Dashboard() {
               This is some text within a card body.
             </div>
           </div>
-        </div>
+        </div>        
       </div>
 
       <div className="row" style={separator}>

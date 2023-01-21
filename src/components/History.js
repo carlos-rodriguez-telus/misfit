@@ -131,6 +131,7 @@ function History() {
                 <label>Select Date:</label> <br />
                 <input
                   className="form-control"
+                  style={{width:"200px"}}
                   type={"date"}
                   onChange={setFilterValue}
                   defaultValue={new Date().toISOString().slice(0, 10)}
@@ -141,7 +142,7 @@ function History() {
             {filter == "category" && (
               <>
                 <label>Select Category:</label> <br />
-                <select className="form-control" onClick={setFilterValue}>
+                <select className="form-control"  onClick={setFilterValue}>
                   {expenseCategories}
                   {incomeCategories}
                 </select>
@@ -185,7 +186,7 @@ function History() {
                 <tr key={item.transaction_id}>
                   <th scope="row">{item.transaction_id}</th>
                   <td>{item.date}</td>
-                  <td>{item.Account.bank_name}</td>
+                  {!!item.Account? <td>{item.Account.bank_name}</td>:<td>Unknown</td>}
                   <td>{item.transaction_type==0?"Income":"Expense"}</td>
                   <td>{cat[item.category]}</td>
                   <td>{item.amount}</td>
