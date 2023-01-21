@@ -30,6 +30,7 @@ function Login() {
       }else{
         //TODO set a valid user
         updateUserId(response.data.userData.user_id);
+        toast.success("Welcome!");
         navigate("/dashboard");
       }
     })

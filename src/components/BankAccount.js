@@ -1,5 +1,5 @@
 import { Formik, Field, Form } from "formik";
-import { useContext, useRef } from "react";
+import { useContext, useState, useEffect,useRef } from "react";
 
 import UserContext from "../providers/UserContext";
 
@@ -9,14 +9,27 @@ import axios from "axios";
 import routes from "../constants/routes";
 
 function BankAccount(props) {
+ 
   const [userID, updateUserId] = useContext(UserContext);
-
+  const [userAccounts, setUserAccounts] = useState([]);
+  const [salva, setSalva] = useState(0);
   const ref = useRef(null);
+
+  useEffect(()=>{
+    axios.get(routes.ACCOUNT+`/${userID}`)
+    .then((response)=>{
+      console.log(response);
+      setUserAccounts(response.data.message);
+    }).catch((error)=>{
+      toast.error("Error while getting user accounts");
+    });
+  },[salva]);
 
   function addAcount(values) {
     axios.post(routes.ACCOUNT, { values }).then((response) => {
       if (response.data.status == "OK") {
         toast.success(response.data.message);
+        Promise.resolve().then(() => setSalva(salva+1));
       } else {
         toast.error(response.data.error);
       }
@@ -35,6 +48,7 @@ function BankAccount(props) {
         .then((response) => {
           if (response.data.status == "OK") {
             toast.success("Account Deleted");
+            Promise.resolve().then(() => setSalva(salva-1));
           } else {
             toast.error(response.data.error);
           }
@@ -47,7 +61,7 @@ function BankAccount(props) {
   return (
     <div className="form-wrapper">
       <img src="./account.png" alt="wallet_icon" style={{width:"48px", height:"48px", marginRight:"10px"}}/>
-      <h2>Add bank account</h2>
+      <h2>Bank Account Management</h2>
       <Formik
         innerRef={ref}
         initialValues={{
@@ -69,7 +83,7 @@ function BankAccount(props) {
             />
           </div>
           <div className="form-group">
-            <label>Account Number:</label>
+            <label>Account Number: <span style={{fontSize:"18px", color:"red"}}>*</span></label>
             <Field
               id="account_number"
               name="account_number"
@@ -115,6 +129,31 @@ function BankAccount(props) {
           </div>
         </Form>
       </Formik>
+      {/* Account Table */}
+      <div style={{ marginTop: "20px" }}>
+        <table className="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Account#</th>
+              <th scope="col">Bank</th>
+              <th scope="col">Balance</th>
+            </tr>
+          </thead>
+          <tbody>
+            {userAccounts.map((item) => {
+              return (
+                <tr key={item.account_number}>
+                  <th scope="row">{item.account_number}</th>
+                  <td>{item.bank_name}</td>
+                  <td>{item.balance}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      <span style={{fontSize:"18px", color:"red"}}>*</span> <small>To remove account please type number and click on "Delete Account"</small>
+      {/* Account Table End */}
     </div>
   );
 }

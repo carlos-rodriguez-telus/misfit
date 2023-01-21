@@ -76,12 +76,12 @@ function Movements() {
     let data = { ...values };
 
     if (data.account_id == "0") {
-      alert("Please select a valid account!");
+      toast.error("Please select a valid account!");
       return;
     }
 
     if (data.category == "0") {
-      alert("Please select a valid category!");
+      toast.error("Please select a valid category!");
       return;
     }
 

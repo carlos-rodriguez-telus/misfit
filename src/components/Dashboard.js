@@ -9,6 +9,14 @@ import UserContext from "../providers/UserContext";
 function Dashboard() {
   const [userID, updateUserId] = useContext(UserContext);
 
+  let resume = [
+    {x: "Food", y: 10, color:1},
+    {x: "Wear", y: 23, color:2},
+    {x: "Car", y: 63, color:3},
+    {x: "Shoes", y: 58, color:4},
+    {x: "House", y: 78, color:5}
+  ];
+
   //CSS
   let separator = {
     marginTop: "25px",
@@ -23,24 +31,24 @@ function Dashboard() {
         <div className="col">
           <div className="card">
             <div className="card-body">
-              <h5 className="card-title">Top 5 Category Expenses</h5>
-                <Graph/>
+              <h5 className="card-title">Expenses by Category</h5>
+                <Graph data={resume}/>
               </div>
           </div>
         </div>
         <div className="col">
           <div className="card">
             <div className="card-body">
-              <h5 className="card-title">Income</h5>
-              This is some text within a card body.
+              <h5 className="card-title">This Month Income</h5>
+              <h2><font color="#31de5f">+ $.1000</font></h2>
             </div>
           </div>
         </div>
         <div className="col">
           <div className="card">
             <div className="card-body">
-              <h5 className="card-title">Expenses</h5>
-              This is some text within a card body.
+              <h5 className="card-title">This Month Expenses</h5>
+              <h2><font color="#e82a60">- $.1000</font></h2>
             </div>
           </div>
         </div>        

@@ -1,22 +1,21 @@
-import { XYPlot, VerticalBarSeries, VerticalGridLines, HorizontalGridLines, XAxis, YAxis } from "react-vis";
+import {
+  XYPlot,
+  XAxis,
+  YAxis,
+  VerticalBarSeries,
+  VerticalGridLines
+} from "react-vis";
 
-function Graph() {
-  const data = [
-    { x: 0, y: 8 },
-    { x: 1, y: 5 },
-    { x: 2, y: 4 },
-    { x: 3, y: 9 },
-    { x: 4, y: 9 }
-  ];
+function Graph({ data }) {
+  const values = [...data];
 
   return (
     <>
-      <XYPlot height={300} width={300}>
-        <VerticalGridLines />
-        <HorizontalGridLines />
-        <XAxis />
+      <XYPlot height={200} width={300} xType="ordinal">
+        <VerticalGridLines/>
         <YAxis />
-        <VerticalBarSeries data={data} />
+        <XAxis />
+        <VerticalBarSeries data={values} />
       </XYPlot>
     </>
   );
