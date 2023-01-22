@@ -18,7 +18,6 @@ function BankAccount(props) {
   useEffect(()=>{
     axios.get(routes.ACCOUNT+`/${userID}`)
     .then((response)=>{
-      console.log(response);
       setUserAccounts(response.data.message);
     }).catch((error)=>{
       toast.error("Error while getting user accounts");

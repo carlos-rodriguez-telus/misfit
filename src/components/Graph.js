@@ -3,7 +3,7 @@ import {
   XAxis,
   YAxis,
   VerticalBarSeries,
-  VerticalGridLines
+  HorizontalGridLines
 } from "react-vis";
 
 function Graph({ data }) {
@@ -12,7 +12,7 @@ function Graph({ data }) {
   return (
     <>
       <XYPlot height={200} width={300} xType="ordinal">
-        <VerticalGridLines/>
+        <HorizontalGridLines/>
         <YAxis />
         <XAxis />
         <VerticalBarSeries data={values} />

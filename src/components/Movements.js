@@ -106,7 +106,7 @@ function Movements() {
   }
 
   const initialValues = {
-    transaction_user_id: 1,
+    transaction_user_id: userID,
     account_id: 0,
     category: 0,
     amount: 0,
