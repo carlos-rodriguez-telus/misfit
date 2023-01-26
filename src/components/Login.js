@@ -42,18 +42,18 @@ function Login() {
   return (
     <>
       <div className="row">
-        <div className="col ">
+        <div className="col">
           <div className="row text-center">
-            <h2>
+            <h2 className="display-6">
               <span><img src="./misfit.png" alt="wallet_icon" style={{
                 width:"128px", height:"128px", marginRight:"10px"
                 }}/></span>
-              Welcome to Misfit!
+              Welcome to <font color="#a056d1">Mis Finanzas Today!</font>
             </h2>
           </div>
           <div className="form-wrapper">
             <div className="form-group">
-              <label>Email:</label>
+              <h5>Email</h5>
               <input
                 id="user"
                 name="user"
@@ -64,7 +64,7 @@ function Login() {
             </div>
             <br />
             <div className="form-group">
-              <label>Password:</label>
+              <h5>Password</h5>
               <input
                 id="password"
                 name="password"

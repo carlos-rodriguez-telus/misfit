@@ -1,5 +1,5 @@
 import { Formik, Field, Form } from "formik";
-import { useContext, useState, useEffect,useRef } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 
 import UserContext from "../providers/UserContext";
 
@@ -9,26 +9,27 @@ import axios from "axios";
 import routes from "../constants/routes";
 
 function BankAccount(props) {
- 
   const [userID, updateUserId] = useContext(UserContext);
   const [userAccounts, setUserAccounts] = useState([]);
   const [salva, setSalva] = useState(0);
   const ref = useRef(null);
 
-  useEffect(()=>{
-    axios.get(routes.ACCOUNT+`/${userID}`)
-    .then((response)=>{
-      setUserAccounts(response.data.message);
-    }).catch((error)=>{
-      toast.error("Error while getting user accounts");
-    });
-  },[salva]);
+  useEffect(() => {
+    axios
+      .get(routes.ACCOUNT + `/${userID}`)
+      .then((response) => {
+        setUserAccounts(response.data.message);
+      })
+      .catch((error) => {
+        toast.error("Error while getting user accounts");
+      });
+  }, [salva]);
 
   function addAcount(values) {
     axios.post(routes.ACCOUNT, { values }).then((response) => {
       if (response.data.status == "OK") {
         toast.success(response.data.message);
-        Promise.resolve().then(() => setSalva(salva+1));
+        Promise.resolve().then(() => setSalva(salva + 1));
       } else {
         toast.error(response.data.error);
       }
@@ -47,7 +48,7 @@ function BankAccount(props) {
         .then((response) => {
           if (response.data.status == "OK") {
             toast.success("Account Deleted");
-            Promise.resolve().then(() => setSalva(salva-1));
+            Promise.resolve().then(() => setSalva(salva - 1));
           } else {
             toast.error(response.data.error);
           }
@@ -59,7 +60,11 @@ function BankAccount(props) {
 
   return (
     <div className="form-wrapper">
-      <img src="./account.png" alt="wallet_icon" style={{width:"48px", height:"48px", marginRight:"10px"}}/>
+      <img
+        src="./account.png"
+        alt="wallet_icon"
+        style={{ width: "48px", height: "48px", marginRight: "10px" }}
+      />
       <h2>Bank Account Management</h2>
       <Formik
         innerRef={ref}
@@ -68,6 +73,7 @@ function BankAccount(props) {
           bank_name: "",
           account_number: 0,
           balance: 0,
+          currency: "QTZ",
         }}
         onSubmit={addAcount}
       >
@@ -82,7 +88,10 @@ function BankAccount(props) {
             />
           </div>
           <div className="form-group">
-            <label>Account Number: <span style={{fontSize:"18px", color:"red"}}>*</span></label>
+            <label>
+              Account Number:{" "}
+              <span style={{ fontSize: "18px", color: "red" }}>*</span>
+            </label>
             <Field
               id="account_number"
               name="account_number"
@@ -98,6 +107,28 @@ function BankAccount(props) {
               className="form-control"
               type="number"
             />
+          </div>
+          <div className="form-group">
+            <label> Currency:</label>
+            <Field
+              id="currency"
+              name="currency"
+              className="form-control"
+              as="select"
+            >
+              <option key="QTZ" value="QTZ">
+                {" "}
+                QTZ{" "}
+              </option>
+              <option key="USD" value="USD">
+                {" "}
+                USD{" "}
+              </option>
+              <option key="EUR" value="EUR">
+                {" "}
+                EUR{" "}
+              </option>
+            </Field>
           </div>
           <div className="form-group">
             <br />
@@ -136,6 +167,7 @@ function BankAccount(props) {
               <th scope="col">Account#</th>
               <th scope="col">Bank</th>
               <th scope="col">Balance</th>
+              <th scope="col">Currency</th>
             </tr>
           </thead>
           <tbody>
@@ -145,13 +177,17 @@ function BankAccount(props) {
                   <th scope="row">{item.account_number}</th>
                   <td>{item.bank_name}</td>
                   <td>{item.balance}</td>
+                  <td>{item.currency}</td>
                 </tr>
               );
             })}
           </tbody>
         </table>
       </div>
-      <span style={{fontSize:"18px", color:"red"}}>*</span> <small>To remove account please type number and click on "Delete Account"</small>
+      <span style={{ fontSize: "18px", color: "red" }}>*</span>{" "}
+      <small>
+        To remove account please type number and click on "Delete Account"
+      </small>
       {/* Account Table End */}
     </div>
   );

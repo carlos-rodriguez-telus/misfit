@@ -64,7 +64,9 @@ function Dashboard() {
     let plainData = graphData.data.message;
     let temp = [];
     plainData.forEach((item)=>{
-      temp.push({x:cat[item.category], y:item.total});
+      if(item.category>3){
+        temp.push({x:cat[item.category], y:item.total, color:item.category});
+      }
     });
     if(temp.length>0) await setBarsData(temp);
   }
@@ -86,7 +88,7 @@ function Dashboard() {
             <div className="card-body">
               <h5 className="card-title">This Month Income</h5>
               <h3>
-                <font color="#31de5f">+ $.{income}</font>
+                <font color="#31de5f">+ {income}</font>
               </h3>
             </div>
           </div>
@@ -96,7 +98,7 @@ function Dashboard() {
             <div className="card-body">
               <h5 className="card-title">This Month Expenses</h5>
               <h3>
-                <font color="#e82a60">- $.{outcome}</font>
+                <font color="#e82a60">- {outcome}</font>
               </h3>
             </div>
           </div>

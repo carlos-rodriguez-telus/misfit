@@ -17,9 +17,10 @@ function Movements() {
     axios.get(routes.ACCOUNT + "/" + userID).then((response) => {
       let array = [...response.data.message];
       array.unshift({
-        bank_name: "",
-        account_number: "Select Account -",
+        bank_name: "- - Select Account",
+        account_number: "",
         account_id: "",
+        currency: "",
       });
       setAccounts(
         array.map((item) => {
@@ -28,7 +29,7 @@ function Movements() {
               key={item.bank_name + item.account_number}
               value={item.account_id}
             >
-              {item.bank_name + " - " + item.account_number}
+              {item.bank_name + " - " + item.account_number + " - " + item.currency}
             </option>
           );
         })
